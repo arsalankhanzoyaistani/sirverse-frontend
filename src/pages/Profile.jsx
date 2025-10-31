@@ -51,7 +51,7 @@ export default function Profile() {
 
   const loadFollowStats = async (username) => {
     try {
-      const res = await getFollowStats(username);
+     const res = await getFollowStatus(profile.user.id);
       if (res.ok) {
         setFollowStats(res.data);
       }
