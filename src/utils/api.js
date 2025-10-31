@@ -2,9 +2,8 @@
 
 // ✅ CORRECT and PRODUCTION-READY
 export const API_URL =
-  process.env.REACT_APP_API_URL ||
-  "http://localhost:5000";  // <-- use this for local development
-
+   process.env.REACT_APP_API_URL ||
+  "https://sirverse-backend-production.up.railway.app";
 export function authHeaders() {
   const token = localStorage.getItem("access_token");
   return token ? { Authorization: `Bearer ${token}` } : {};
