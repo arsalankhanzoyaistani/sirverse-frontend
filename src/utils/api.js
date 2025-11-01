@@ -246,6 +246,14 @@ export async function getFollowStatus(userId) {
   return handleResp(r);
 }
 
+// ADD THIS MISSING FUNCTION - FIX FOR NETLIFY BUILD ERROR
+export async function getFollowStats(userId) {
+  const r = await fetch(`${API_URL}/api/users/${userId}/follow_status`, {
+    headers: { ...authHeaders() },
+  });
+  return handleResp(r);
+}
+
 // Block/Unblock APIs
 export async function blockUser(userId) {
   const r = await fetch(`${API_URL}/api/users/${userId}/block`, {
