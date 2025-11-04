@@ -189,6 +189,13 @@ export async function deleteAIHistory() {
   return r.json();
 }
 
+
+// ✅ Fix build: Add missing getReportTypes export
+export async function getReportTypes() {
+  const r = await fetch(`${API_URL}/api/report/types`);
+  return handleResp(r);
+}
+
 // ✅ Default Export
 export default {
   ping,
@@ -211,4 +218,5 @@ export default {
   fetchAIHistory,
   saveAIMessage,
   deleteAIHistory,
+  getReportTypes,
 };
