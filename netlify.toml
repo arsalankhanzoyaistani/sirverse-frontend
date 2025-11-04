@@ -1,12 +1,9 @@
-# netlify.toml
-# =====================================
-# ✅ Netlify configuration for React SPA
-# =====================================
-
+# netlify.toml — Fix React Router 404 refresh issue
 [build]
   command = "npm run build"
   publish = "build"
 
+# ✅ Redirect all routes to index.html (so React Router handles them)
 [[redirects]]
   from = "/*"
   to = "/index.html"
