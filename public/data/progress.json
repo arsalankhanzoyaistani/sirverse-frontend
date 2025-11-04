@@ -1,0 +1,8 @@
+[
+  { "section": "Backend Core", "progress": 82, "description": "Flask + PostgreSQL + JWT", "eta": "2025-11-15" },
+  { "section": "Auth System", "progress": 70, "description": "Login/Register flow", "eta": "2025-11-01" },
+  { "section": "Post System", "progress": 56, "description": "CRUD + likes + comments", "eta": "2025-12-01" },
+  { "section": "AI Module", "progress": 48, "description": "Sir G + Super Sir G status", "eta": "2026-02-01" },
+  { "section": "Frontend Integration", "progress": 66, "description": "React components", "eta": "2025-11-20" },
+  { "section": "Deployment", "progress": 30, "description": "Railway + Netlify + Domain", "stage": "CI pipeline setup", "eta": "2025-12-15" }
+]
