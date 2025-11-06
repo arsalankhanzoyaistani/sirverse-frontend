@@ -26,7 +26,7 @@ export default function TopNav() {
     }).finally(() => {
       // Clear localStorage
       localStorage.removeItem("username");
-      window.location.href = "/send-otp";
+      window.location.href = "/login";
     });
   }
 
@@ -152,8 +152,9 @@ export default function TopNav() {
             </>
           ) : (
             <Link
-              to="/send-otp"
-              className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-600 transition-colors"
+            to="/login"
+            className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-600 transition-colors"
+                     
             >
               Login
             </Link>

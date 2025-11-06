@@ -15,8 +15,8 @@ import BottomNav from "./components/BottomNav";
 import Posts from "./pages/Posts";
 import Reels from "./pages/Reels";
 import Dashboard from "./pages/Dashboard";
-import SendOTP from "./pages/SendOTP";
-import VerifyOTP from "./pages/VerifyOTP";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import AI from "./pages/AI";
 import Chats from "./pages/Chats"; 
@@ -48,11 +48,11 @@ function AnimatedRoutes() {
           ["/ai", <AI />],
           ["/chats", <Chats />],
           ["/profile/:username", <Profile />],
-          ["/send-otp", <SendOTP />],
-          ["/verify-otp", <VerifyOTP />],
+          ["/register", <Register />],
+          ["/login", <Login />],
           ["/tools", <Posts />], // Temporary - replace later with real Tools component
           ["/reels", <Reels />],
-          ["/trends", <Posts />], // Temporary - will be removed later
+          ["/trends", <Posts />], // Temporary - will be added later
           ["/privacy-policy", <PrivacyPolicy />],
           ["/terms-of-service", <TermsOfService />],
           ["/blocked-users", <BlockedUsers />],
@@ -100,8 +100,8 @@ function AnimatedRoutes() {
 function AppLayout() {
   const location = useLocation();
   const isChatPage = location.pathname.startsWith("/chats");
-  const isAuthPage = location.pathname.startsWith("/send-otp") || 
-                     location.pathname.startsWith("/verify-otp");
+  const isAuthPage = location.pathname.startsWith("/login") ||
+                     location.pathname.startsWith("/register");
 
   return (
     <>
