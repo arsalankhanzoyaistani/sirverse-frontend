@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { fetchPosts } from "../utils/api";
-import PostComposer from "../components/PostComposer";
 import PostCard from "../components/PostCard";
 import GlassCard from "../components/ui/GlassCard";
 import Button from "../components/ui/Button";
@@ -33,17 +32,18 @@ export default function Posts() {
 
   return (
     <section className="max-w-2xl mx-auto space-y-6 fade-in">
-      <GlassCard>
-        <h2 className="text-2xl font-bold neon-text mb-3">📝 Create Post</h2>
-        <PostComposer onPostCreated={refresh} />
-      </GlassCard>
-
+      {/* REMOVED PostComposer - Users will create posts from a separate button */}
+      
       {loading && posts.length === 0 && (
         <div className="text-center text-gray-400">Loading posts...</div>
       )}
 
       {posts.length === 0 && !loading && (
-        <div className="text-center text-gray-400">No posts yet</div>
+        <GlassCard className="text-center p-8">
+          <div className="text-6xl mb-4">📝</div>
+          <h3 className="text-xl font-semibold mb-2">No posts yet</h3>
+          <p className="text-gray-600 mb-4">Be the first to share something!</p>
+        </GlassCard>
       )}
 
       <div className="space-y-4">
@@ -60,4 +60,3 @@ export default function Posts() {
     </section>
   );
 }
-s

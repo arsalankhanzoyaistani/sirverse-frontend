@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { registerUser } from "../utils/api";
 
 export default function Register() {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     role: "",
     username: "",
-    email: "",
-    phone: "",
+    identifier: "", // Use identifier instead of separate email/phone
     password: "",
     first_name: "",
     last_name: "",
@@ -16,6 +18,7 @@ export default function Register() {
   });
 
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -23,22 +26,61 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = await registerUser(form);
-    setMessage(data.message || data.error || "Something went wrong");
+    setLoading(true);
+    setMessage("");
+    
+    try {
+      // Prepare data for backend
+      const payload = {
+        username: form.username,
+        identifier: form.identifier, // This can be email OR phone
+        password: form.password,
+        first_name: form.first_name,
+        last_name: form.last_name,
+        role: form.role,
+        dob: form.dob,
+        gender: form.gender,
+        class_level: form.role === "student" ? form.class_level : null,
+      };
+
+      const response = await registerUser(payload);
+
+      if (response.ok) {
+        // ✅ SUCCESS - Backend returns success message
+        setMessage("Account created successfully! Redirecting to login...");
+        
+        // Wait a bit then redirect to login
+        setTimeout(() => {
+          navigate("/login");
+        }, 2000);
+        
+      } else {
+        // ❌ ERROR - Show backend error message
+        setMessage(response.data?.error || "Registration failed. Please try again.");
+      }
+    } catch (error) {
+      setMessage("Network error. Please check your connection and try again.");
+      console.error("Registration error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-100 px-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-xl shadow-md w-full max-w-md"
+        className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md"
       >
-        <h2 className="text-2xl font-bold mb-4 text-center">Create Account</h2>
+        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+          Create Your Account
+        </h2>
 
         {/* Role */}
         <select
           name="role"
-          className="w-full p-2 border rounded mb-2"
+          value={form.role}
+          className="w-full p-3 border border-gray-300 rounded-lg mb-3 focus:ring-2 focus:ring-blue-400"
           onChange={handleChange}
           required
         >
@@ -47,76 +89,81 @@ export default function Register() {
           <option value="teacher">Teacher</option>
         </select>
 
-        {/* Email or Phone */}
+        {/* Identifier (Email or Phone) */}
         <input
-          name="email"
-          placeholder="Email (optional)"
-          className="w-full p-2 border rounded mb-2"
+          name="identifier"
+          placeholder="Email or Phone Number"
+          value={form.identifier}
+          className="w-full p-3 border border-gray-300 rounded-lg mb-3"
           onChange={handleChange}
-        />
-        <input
-          name="phone"
-          placeholder="Phone (optional)"
-          className="w-full p-2 border rounded mb-2"
-          onChange={handleChange}
+          required
         />
 
+        {/* Username & Password */}
         <input
           name="username"
           placeholder="Username"
-          className="w-full p-2 border rounded mb-2"
+          value={form.username}
+          className="w-full p-3 border border-gray-300 rounded-lg mb-3"
           onChange={handleChange}
           required
         />
-
         <input
-          name="password"
           type="password"
-          placeholder="Password (8+ chars)"
-          className="w-full p-2 border rounded mb-2"
+          name="password"
+          placeholder="Password (8+ characters)"
+          value={form.password}
+          className="w-full p-3 border border-gray-300 rounded-lg mb-3"
           onChange={handleChange}
           required
+          minLength="8"
         />
 
+        {/* Personal Info */}
         <input
           name="first_name"
           placeholder="First Name"
-          className="w-full p-2 border rounded mb-2"
+          value={form.first_name}
+          className="w-full p-3 border border-gray-300 rounded-lg mb-3"
           onChange={handleChange}
           required
         />
         <input
           name="last_name"
           placeholder="Last Name (optional)"
-          className="w-full p-2 border rounded mb-2"
+          value={form.last_name}
+          className="w-full p-3 border border-gray-300 rounded-lg mb-3"
           onChange={handleChange}
         />
-
         <input
-          name="dob"
           type="date"
-          className="w-full p-2 border rounded mb-2"
+          name="dob"
+          value={form.dob}
+          className="w-full p-3 border border-gray-300 rounded-lg mb-3"
           onChange={handleChange}
           required
         />
 
         <select
           name="gender"
-          className="w-full p-2 border rounded mb-2"
+          value={form.gender}
+          className="w-full p-3 border border-gray-300 rounded-lg mb-3"
           onChange={handleChange}
           required
         >
           <option value="">Select Gender</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Other">Other</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
         </select>
 
         {form.role === "student" && (
           <select
             name="class_level"
-            className="w-full p-2 border rounded mb-2"
+            value={form.class_level}
+            className="w-full p-3 border border-gray-300 rounded-lg mb-3"
             onChange={handleChange}
+            required
           >
             <option value="">Select Class</option>
             {["6", "7", "8", "9", "10", "11", "12"].map((c) => (
@@ -127,14 +174,38 @@ export default function Register() {
           </select>
         )}
 
+        {/* Submit */}
         <button
           type="submit"
-          className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded mt-2"
+          disabled={loading}
+          className={`w-full py-3 rounded-lg text-white font-medium transition ${
+            loading
+              ? "bg-blue-300 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700"
+          }`}
         >
-          Register
+          {loading ? "Registering..." : "Create Account"}
         </button>
 
-        {message && <p className="text-center mt-2 text-sm">{message}</p>}
+        {/* Message */}
+        {message && (
+          <p className={`text-center text-sm mt-3 ${
+            message.includes("success") ? "text-green-600" : "text-red-500"
+          }`}>
+            {message}
+          </p>
+        )}
+
+        {/* Login Redirect */}
+        <p className="text-center text-sm text-gray-600 mt-5">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="text-blue-600 font-semibold hover:underline"
+          >
+            Login here
+          </Link>
+        </p>
       </form>
     </div>
   );

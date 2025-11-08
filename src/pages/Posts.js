@@ -1,23 +1,64 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { fetchPosts } from "../utils/api";
+import PostCard from "../components/PostCard";
 import PostComposer from "../components/PostComposer";
-import PostList from "../components/PostList";
+import GlassCard from "../components/ui/GlassCard";
+import Button from "../components/ui/Button";
 
 export default function Posts() {
-  const [refreshKey, setRefreshKey] = useState(0);
+  const [posts, setPosts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(1);
+  const [loading, setLoading] = useState(false);
 
-  const handlePostCreated = () => {
-    setRefreshKey(prev => prev + 1);
-  };
+  async function loadPosts(p = 1) {
+    setLoading(true);
+    const res = await fetchPosts(p, 10);
+    setLoading(false);
+    if (res.ok) {
+      if (p === 1) setPosts(res.data.items || []);
+      else setPosts((cur) => [...cur, ...(res.data.items || [])]);
+      setPage(res.data.page || p);
+      setPages(res.data.pages || 1);
+    }
+  }
+
+  useEffect(() => {
+    loadPosts(1);
+  }, []);
+
+  function refresh() {
+    loadPosts(1);
+  }
 
   return (
-    <div className="min-h-screen pb-4">
-      {/* Removed the header with "Home" text */}
+    <section className="max-w-2xl mx-auto space-y-6 fade-in">
+      {/* ✅ ADDED BACK PostComposer - Users can create posts */}
+      <PostComposer onPostCreated={refresh} />
       
-      {/* Post Composer */}
-      <PostComposer onPostCreated={handlePostCreated} />
+      {loading && posts.length === 0 && (
+        <div className="text-center text-gray-400">Loading posts...</div>
+      )}
 
-      {/* Posts List */}
-      <PostList refreshKey={refreshKey} />
-    </div>
+      {posts.length === 0 && !loading && (
+        <GlassCard className="text-center p-8">
+          <div className="text-6xl mb-4">📝</div>
+          <h3 className="text-xl font-semibold mb-2">No posts yet</h3>
+          <p className="text-gray-600 mb-4">Be the first to share something!</p>
+        </GlassCard>
+      )}
+
+      <div className="space-y-4">
+        {posts.map((p) => (
+          <PostCard key={p.id} post={p} onRefresh={refresh} />
+        ))}
+      </div>
+
+      {page < pages && (
+        <div className="text-center mt-6">
+          <Button onClick={() => loadPosts(page + 1)}>Load More</Button>
+        </div>
+      )}
+    </section>
   );
 }
