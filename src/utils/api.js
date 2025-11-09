@@ -257,6 +257,123 @@ export function logout() {
   window.location.href = "/login";
 }
 
+// ------------------------------------------------
+// 🧩 LEGACY COMPATIBILITY FIX - Missing Exports
+// ------------------------------------------------
+
+// Reports
+export async function getReportTypes() {
+  return await apiFetch(`${API_URL}/api/report/types`);
+}
+
+export async function submitReport(reportData) {
+  return await apiFetch(`${API_URL}/api/report`, {
+    method: "POST",
+    headers: authHeaders(),
+    body: JSON.stringify(reportData),
+  });
+}
+
+// AI History
+export async function fetchAIHistory() {
+  return await apiFetch(`${API_URL}/api/ai/history`, {
+    headers: authHeaders(),
+  });
+}
+
+export async function saveAIMessage(role, text) {
+  return await apiFetch(`${API_URL}/api/ai/history`, {
+    method: "POST",
+    headers: authHeaders(),
+    body: JSON.stringify({ role, text }),
+  });
+}
+
+export async function deleteAIHistory() {
+  return await apiFetch(`${API_URL}/api/ai/history`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  });
+}
+
+// Chats
+export async function createChatRoom(otherUserId) {
+  return await apiFetch(`${API_URL}/api/chats/create_room`, {
+    method: "POST",
+    headers: authHeaders(),
+    body: JSON.stringify({ other_user_id: otherUserId }),
+  });
+}
+
+// Reels extras
+export async function toggleReelLike(reelId) {
+  return await apiFetch(`${API_URL}/api/reels/${reelId}/like`, {
+    method: "POST",
+    headers: authHeaders(),
+  });
+}
+
+export async function deleteReel(reelId) {
+  return await apiFetch(`${API_URL}/api/reels/${reelId}`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  });
+}
+
+// Legal
+export async function getPrivacyPolicy() {
+  return await apiFetch(`${API_URL}/api/privacy-policy`);
+}
+
+export async function getTermsOfService() {
+  return await apiFetch(`${API_URL}/api/terms-of-service`);
+}
+
+// Blocked Users
+export async function getBlockedUsers() {
+  return await apiFetch(`${API_URL}/api/users/blocked`, {
+    headers: authHeaders(),
+  });
+}
+
+export async function unblockUser(userId) {
+  return await apiFetch(`${API_URL}/api/users/${userId}/unblock`, {
+    method: "POST",
+    headers: authHeaders(),
+  });
+}
+
+// ------------------------------------------------
+// 🧠 Debug + Upload Compatibility (Chats + Settings)
+// ------------------------------------------------
+export function debugUserState() {
+  const token = localStorage.getItem("access_token");
+  const username = localStorage.getItem("username");
+  const userId = getUserIdFromToken();
+
+  console.log("🧩 User Debug Info:", {
+    hasToken: !!token,
+    username,
+    userId,
+    isAuthenticated: isAuthenticated(),
+  });
+
+  return {
+    hasToken: !!token,
+    username,
+    userId,
+    isAuthenticated: isAuthenticated(),
+  };
+}
+
+export async function uploadFile(file) {
+  console.log("⚙️ Uploading generic file:", file.name);
+  return await uploadToCloudinaryDirect(file, "sirverse_uploads");
+}
+
+// ------------------------------------------------
+// ✅ FINAL EXPORTS
+// ------------------------------------------------
 export default {
   API_URL,
   uploadToCloudinaryDirect,
@@ -272,4 +389,18 @@ export default {
   fetchUserStats,
   uploadReel,
   askSirG,
+  getReportTypes,
+  submitReport,
+  fetchAIHistory,
+  saveAIMessage,
+  deleteAIHistory,
+  createChatRoom,
+  toggleReelLike,
+  deleteReel,
+  getPrivacyPolicy,
+  getTermsOfService,
+  getBlockedUsers,
+  unblockUser,
+  debugUserState,
+  uploadFile,
 };
