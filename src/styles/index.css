@@ -1,0 +1,260 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 🌈 Modern Light Theme — SirVerse Premium */
+
+/* ================================
+   CSS RESET & BASE STYLES
+================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+  color: #1f2937;
+  line-height: 1.6;
+}
+
+/* ================================
+   SCROLLBAR — BEAUTIFUL MINIMAL DESIGN
+================================ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ================================
+   GLASS UI COMPONENT
+================================ */
+.glass-card {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.12),
+    0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+/* ================================
+   BUTTONS — PREMIUM DESIGN
+================================ */
+.btn-primary {
+  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+  color: white;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
+  transition: all 0.26s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 22px rgba(59, 130, 246, 0.4);
+}
+
+.btn-secondary {
+  background: white;
+  color: #374151;
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  font-weight: 600;
+  transition: all 0.26s ease;
+}
+
+.btn-secondary:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+}
+
+/* ================================
+   INPUT FIELDS
+================================ */
+.input-field {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  transition: all 0.25s ease;
+  color: #1f2937;
+}
+
+.input-field:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.input-field::placeholder {
+  color: #9ca3af;
+}
+
+/* ================================
+   POST CARD STYLING
+================================ */
+.post-card {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 18px;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: all 0.28s ease;
+}
+
+.post-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+/* ================================
+   ANIMATIONS — SMOOTH PREMIUM UI
+================================ */
+
+/* Fade in */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+  }
+}
+.fade-in { animation: fadeIn 0.45s ease-out; }
+
+/* Blob effect */
+@keyframes blob {
+  0% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(35px, -40px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+  100% { transform: translate(0,0) scale(1); }
+}
+.animate-blob { animation: blob 7s infinite; }
+
+/* Shimmer */
+@keyframes shimmer {
+  0% { transform: translateX(-100%) skewX(-12deg); }
+  100% { transform: translateX(200%) skewX(-12deg); }
+}
+.animate-shimmer { animation: shimmer 2.5s infinite; }
+
+/* Bounce */
+@keyframes bounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.animate-bounce { animation: bounce 1.2s infinite; }
+
+/* Ping */
+@keyframes ping {
+  0% { opacity: 1; transform: scale(1); }
+  75% { opacity: 0; transform: scale(1.8); }
+  100% { opacity: 0; transform: scale(2.3); }
+}
+.animate-ping { animation: ping 1s cubic-bezier(0,0,0.2,1) infinite; }
+
+/* ================================
+   BOTTOM NAV ICONS — MOBILE NAV
+================================ */
+.bottom-nav-icon {
+  transition: all 0.18s ease-in-out;
+}
+
+.bottom-nav-icon:hover {
+  transform: scale(1.1);
+}
+
+.bottom-nav-icon:active {
+  transform: scale(0.95);
+}
+
+.bottom-nav-active {
+  position: relative;
+}
+
+.bottom-nav-active::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  background-color: #3b82f6;
+  border-radius: 50%;
+}
+
+/* Logo shine effect */
+@keyframes shine {
+  0% { transform: translateX(-100%) skewX(-12deg); }
+  100% { transform: translateX(200%) skewX(-12deg); }
+}
+.animate-shine { animation: shine 3.2s infinite ease-in-out; }
+
+/* Hover enlarge */
+.logo-hover:hover {
+  transform: scale(1.05);
+  transition: 0.3s ease;
+}
+
+/* ================================
+   RESPONSIVENESS
+================================ */
+@media (max-width: 768px) {
+  .glass-card { border-radius: 12px; }
+  .btn-primary, .btn-secondary { padding: 10px 20px; font-size: 14px; }
+  .input-field { padding: 12px 14px; border-radius: 10px; }
+}
+
+/* ================================
+   ACCESSIBILITY IMPROVEMENTS
+================================ */
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
