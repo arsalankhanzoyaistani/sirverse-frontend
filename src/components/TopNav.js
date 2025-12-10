@@ -1,14 +1,14 @@
-// frontend/src/components/TopNav.js - UPDATED FOR NEW AUTH SYSTEM
+// frontend/src/components/TopNav.js
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Avatar from "./ui/Avatar";
+import SearchBar from "./SearchBar";
 
 export default function TopNav() {
   const username = localStorage.getItem("username");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -20,129 +20,82 @@ export default function TopNav() {
   }, []);
 
   function handleLogout() {
-    // Clear localStorage for new authentication system
     localStorage.removeItem("access_token");
     localStorage.removeItem("username");
     localStorage.removeItem("user_id");
-    
-    // Redirect to login page
     window.location.href = "/login";
   }
 
   return (
-    <header className="sticky top-0 bg-white/95 backdrop-blur-lg border-b border-gray-200 z-40">
-      <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
-        {/* Left Side: Logo with your image */}
-        <Link to="/posts" className="flex items-center gap-2">
-          <div className="relative">
-            {/* Your Logo Image */}
+    <header className="top-nav">
+      <div className="nav-container">
+        {/* Logo */}
+        <Link to="/posts" className="app-logo">
+          <div className="logo-wrapper">
             <img
               src="/logo.png"
               alt="SirVerse Logo"
-              className="w-12 h-12 rounded-2xl object-cover border-2 border-white shadow-lg"
+              className="logo-image"
             />
-            {/* Optional Glow Effect */}
-            <div className="absolute inset-0 bg-blue-400/30 rounded-2xl blur-md -z-10 animate-pulse"></div>
+            <div className="logo-glow"></div>
           </div>
           
-          {/* Logo Text */}
-          <div className="hidden sm:block">
-            <div className="font-bold text-gray-900 text-lg leading-tight">SirVerse</div>
-            <div className="text-xs text-gray-500 leading-tight">Connect & Share</div>
-          </div>
         </Link>
 
-        {/* Right Side: Profile Dropdown */}
-        <div className="relative" ref={dropdownRef}>
+        {/* SearchBar */}
+        <div className="search-container">
+          <SearchBar />
+        </div>
+
+        {/* Profile Dropdown */}
+        <div className="profile-dropdown" ref={dropdownRef}>
           {username ? (
             <>
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-2 p-1 rounded-full hover:bg-gray-100 transition-colors"
+                className="profile-button"
               >
-                <Avatar 
-                  src={null} 
-                  emoji="👤" 
-                  size={40} 
-                  glow={false}
-                />
+                <Avatar src={null} emoji="👤" size={40} glow={true} />
               </button>
 
-              {/* Dropdown Menu */}
               {dropdownOpen && (
-                <div className="absolute right-0 top-12 w-64 bg-white rounded-2xl shadow-xl border border-gray-200 py-2 z-50">
-                  {/* User Info */}
-                  <div className="px-4 py-3 border-b border-gray-100">
-                    <div className="font-semibold text-gray-900">@{username}</div>
-                    <div className="text-sm text-gray-500">View your profile</div>
+                <div className="dropdown-menu">
+                  <div className="user-info">
+                    <div className="user-name">@{username}</div>
+                    <div className="user-status">View your profile</div>
                   </div>
 
-                  {/* Menu Items */}
-                  <div className="py-2">
-                    <Link
-                      to="/dashboard"
-                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors"
-                      onClick={() => setDropdownOpen(false)}
-                    >
-                      <span className="text-xl">📊</span>
+                  <div className="menu-items">
+                    <Link to="/dashboard" className="menu-item" onClick={() => setDropdownOpen(false)}>
+                      <span className="menu-icon">📊</span>
                       <span>Dashboard</span>
                     </Link>
-
-                    <Link
-                      to="/history"
-                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors"
-                      onClick={() => setDropdownOpen(false)}
-                    >
-                      <span className="text-xl">🕒</span>
+                    <Link to="/history" className="menu-item" onClick={() => setDropdownOpen(false)}>
+                      <span className="menu-icon">🕒</span>
                       <span>History</span>
                     </Link>
-
-                    <Link
-                      to="/liked-posts"
-                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors"
-                      onClick={() => setDropdownOpen(false)}
-                    >
-                      <span className="text-xl">❤️</span>
+                    <Link to="/liked-posts" className="menu-item" onClick={() => setDropdownOpen(false)}>
+                      <span className="menu-icon">❤️</span>
                       <span>Liked Posts</span>
                     </Link>
-
-                    <Link
-                      to="/saved-posts"
-                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors"
-                      onClick={() => setDropdownOpen(false)}
-                    >
-                      <span className="text-xl">📁</span>
+                    <Link to="/saved-posts" className="menu-item" onClick={() => setDropdownOpen(false)}>
+                      <span className="menu-icon">📁</span>
                       <span>Saved Posts</span>
                     </Link>
 
-                    <div className="border-t border-gray-100 my-2"></div>
+                    <div className="menu-divider"></div>
 
-                    <Link
-                      to="/settings"
-                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors"
-                      onClick={() => setDropdownOpen(false)}
-                    >
-                      <span className="text-xl">⚙️</span>
+                    <Link to="/settings" className="menu-item" onClick={() => setDropdownOpen(false)}>
+                      <span className="menu-icon">⚙️</span>
                       <span>Settings</span>
                     </Link>
-
-                    <Link
-                      to="/privacy-policy"
-                      className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 transition-colors"
-                      onClick={() => setDropdownOpen(false)}
-                    >
-                      <span className="text-xl">📄</span>
+                    <Link to="/privacy-policy" className="menu-item" onClick={() => setDropdownOpen(false)}>
+                      <span className="menu-icon">📄</span>
                       <span>Privacy & Terms</span>
                     </Link>
 
-                    <button
-                      onClick={() => {
-                        setDropdownOpen(false);
-                        handleLogout();
-                      }}
-                      className="flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 transition-colors w-full text-left"
-                    >
-                      <span className="text-xl">🚪</span>
+                    <button onClick={handleLogout} className="menu-item logout-item">
+                      <span className="menu-icon">🚪</span>
                       <span>Logout</span>
                     </button>
                   </div>
@@ -150,15 +103,215 @@ export default function TopNav() {
               )}
             </>
           ) : (
-            <Link
-              to="/login"
-              className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-600 transition-colors"
-            >
+            <Link to="/login" className="login-button">
               Login
             </Link>
           )}
         </div>
       </div>
+
+      <style jsx>{`
+        .top-nav {
+          position: sticky;
+          top: 0;
+          background: rgba(255, 255, 255, 0.9);
+          backdrop-filter: blur(20px);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+          z-index: 100;
+        }
+
+        .nav-container {
+          max-width: 414px;
+          margin: 0 auto;
+          padding: 12px 20px;
+          display: flex;
+          align-items: center;
+          gap: 15px;
+        }
+
+        .app-logo {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          text-decoration: none;
+          flex-shrink: 0;
+        }
+
+        .logo-wrapper {
+          position: relative;
+          width: 48px;
+          height: 48px;
+        }
+
+        .logo-image {
+          width: 100%;
+          height: 100%;
+          border-radius: 16px;
+          object-fit: cover;
+          border: 2px solid white;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-glow {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(45deg, #1B4B5A, #4ECDC4);
+          border-radius: 16px;
+          filter: blur(8px);
+          opacity: 0.3;
+          z-index: -1;
+          animation: logoGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoGlow {
+          from { opacity: 0.3; }
+          to { opacity: 0.5; }
+        }
+
+        .logo-text {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .app-title {
+          font-family: 'Playfair Display', serif;
+          font-size: 20px;
+          font-weight: 700;
+          background: linear-gradient(135deg, #1B4B5A, #4ECDC4);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .app-subtitle {
+          font-size: 10px;
+          color: #666;
+          letter-spacing: 0.5px;
+        }
+
+        .search-container {
+          flex: 1;
+          min-width: 0;
+        }
+
+        .profile-dropdown {
+          position: relative;
+          flex-shrink: 0;
+        }
+
+        .profile-button {
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 4px;
+          border-radius: 50%;
+          transition: transform 0.3s ease;
+        }
+
+        .profile-button:hover {
+          transform: scale(1.1);
+        }
+
+        .dropdown-menu {
+          position: absolute;
+          right: 0;
+          top: calc(100% + 8px);
+          width: 260px;
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(20px);
+          border-radius: 20px;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+          overflow: hidden;
+          z-index: 1000;
+          animation: dropdownFade 0.3s ease;
+        }
+
+        @keyframes dropdownFade {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .user-info {
+          padding: 20px;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+          background: linear-gradient(135deg, #1B4B5A, #4ECDC4);
+          color: white;
+        }
+
+        .user-name {
+          font-size: 18px;
+          font-weight: 600;
+          margin-bottom: 4px;
+        }
+
+        .user-status {
+          font-size: 12px;
+          opacity: 0.9;
+        }
+
+        .menu-items {
+          padding: 8px 0;
+        }
+
+        .menu-item {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          width: 100%;
+          padding: 12px 20px;
+          background: none;
+          border: none;
+          text-decoration: none;
+          color: #2C3E50;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: background-color 0.2s ease;
+        }
+
+        .menu-item:hover {
+          background: rgba(27, 75, 90, 0.05);
+        }
+
+        .menu-icon {
+          font-size: 20px;
+          width: 24px;
+          text-align: center;
+        }
+
+        .menu-divider {
+          height: 1px;
+          background: rgba(0, 0, 0, 0.1);
+          margin: 8px 20px;
+        }
+
+        .logout-item {
+          color: #FF6B6B;
+        }
+
+        .login-button {
+          background: linear-gradient(135deg, #1B4B5A, #4ECDC4);
+          color: white;
+          padding: 8px 16px;
+          border-radius: 20px;
+          text-decoration: none;
+          font-size: 14px;
+          font-weight: 500;
+          transition: all 0.3s ease;
+        }
+
+        .login-button:hover {
+          transform: scale(1.05);
+          box-shadow: 0 4px 12px rgba(27, 75, 90, 0.2);
+        }
+      `}</style>
     </header>
   );
 }
